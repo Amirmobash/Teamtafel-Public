@@ -78,4 +78,4 @@ The app can be pointed to a shared folder to support multi-device workflows.
 ### Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/Teamtafel.git
+   git clone https://github.com/amirmobash/Teamtafel.git     Amir Mobasheraghdam
