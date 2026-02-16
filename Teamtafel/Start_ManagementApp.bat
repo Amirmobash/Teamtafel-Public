@@ -8,9 +8,6 @@ if not exist "ManagementApp.exe" (
     echo Please make sure the application is built and deployed correctly.
     pause
     exit /b 1
-REM Wait a moment for the app to start
-timeout /t 2 /nobreak >nul
-
 REM Check if the process is running
 tasklist /FI "IMAGENAME eq ManagementApp.exe" 2>NUL | find /I /N "ManagementApp.exe">NUL
 if "%ERRORLEVEL%"=="0" (
@@ -25,5 +22,6 @@ if "%ERRORLEVEL%"=="0" (
 echo.
 echo Press any key to close this window...
 pause >nul
+
 
 
