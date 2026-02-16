@@ -8,12 +8,6 @@ if not exist "ManagementApp.exe" (
     echo Please make sure the application is built and deployed correctly.
     pause
     exit /b 1
-)
-
-REM Start the application
-echo Launching ManagementApp.exe...
-start "" ManagementApp.exe
-
 REM Wait a moment for the app to start
 timeout /t 2 /nobreak >nul
 
@@ -31,4 +25,5 @@ if "%ERRORLEVEL%"=="0" (
 echo.
 echo Press any key to close this window...
 pause >nul
+
 
