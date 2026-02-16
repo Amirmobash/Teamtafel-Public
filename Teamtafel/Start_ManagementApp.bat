@@ -5,7 +5,6 @@ cd /d "%~dp0ManagementApp"
 REM Check if ManagementApp.exe exists
 if not exist "ManagementApp.exe" (
     echo ERROR: ManagementApp.exe not found in %CD%
-    echo Please make sure the application is built and deployed correctly.
     pause
     exit /b 1
 REM Check if the process is running
@@ -22,6 +21,7 @@ if "%ERRORLEVEL%"=="0" (
 echo.
 echo Press any key to close this window...
 pause >nul
+
 
 
 
