@@ -23,7 +23,6 @@ if not exist "ManagementApp.exe" (
     pause
     exit /b 1
 REM Check if the process is running
-tasklist /FI "IMAGENAME eq ManagementApp.exe" 2>NUL | find /I /N "ManagementApp.exe">NUL
-if "%ERRORLEV
+
 
 
