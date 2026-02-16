@@ -11,16 +11,8 @@ REM Check if the process is running
 tasklist /FI "IMAGENAME eq ManagementApp.exe" 2>NUL | find /I /N "ManagementApp.exe">NUL
 if "%ERRORLEVEL%"=="0" (
     echo Management App started successfully!
-    echo The application window should be visible now.
-) else (
-    echo WARNING: Management App process not found after startup.
-    echo The application may have crashed or failed to start.
-    echo Please check the log file at: ManagementApp\Data\Logs\management_app.log
-)
+    echo The ap
 
-echo.
-echo Press any key to close this window...
-pause >nul
 
 
 
