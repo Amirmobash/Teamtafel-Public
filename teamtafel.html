@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teamtafel · Workforce Management Demo (by Amir Mobasheraghdam)</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+            padding: 2rem 2rem 1.5rem;
+        }
+
+        /* header + author */
+        .top-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .title-section h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #0f2b3d, #1e4a6f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .title-section .badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .author-card {
+            background: #f1f5f9;
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .author-card i {
+            font-size: 1.8rem;
+            color: #2563eb;
+        }
+
+        .author-card .author-text {
+            font-weight: 600;
+        }
+
+        .author-card .author-text small {
+            font-weight: 400;
+            color: #475569;
+            font-size: 0.8rem;
+        }
+
+        .author-card a {
+            color: #1e293b;
+            text-decoration: none;
+        }
+
+        .tech-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            margin: 1.8rem 0 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tech-item {
+            background: #f8fafc;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0f3b5e;
+            border: 1px solid #cbd5e1;
+        }
+
+        .tech-item i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        /* feature grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0 1.8rem;
+        }
+
+        .feature-card {
+            background: #f0f9ff;
+            border-radius: 1.5rem;
+            padding: 1.3rem 1rem;
+            border: 1px solid #b8d7fb;
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            background: #e0f2fe;
+            transform: translateY(-3px);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: #0369a1;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        /* demo tabs */
+        .demo-panel {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #d9e2ef;
+            margin: 2rem 0 1.5rem;
+            overflow: hidden;
+        }
+
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            background: #ecf3fa;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.8rem;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #334155;
+            transition: 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn i {
+            margin-right: 8px;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #0b3b5c;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        .tab-content {
+            padding: 2rem 1.8rem;
+            background: white;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        /* mock tables / cards */
+        .mock-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .mock-table th {
+            text-align: left;
+            padding: 0.8rem 0.3rem 0.5rem;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .mock-table td {
+            padding: 0.8rem 0.3rem;
+            border-bottom: 1px solid #e9eef3;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .role-badge {
+            background: #dbeafe;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .shift-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .shift-day {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 1rem;
+            min-width: 110px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .shift-day h4 {
+            font-size: 1rem;
+            border-bottom: 1px dashed #94a3b8;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
+        }
+
+        .shift-slot {
+            font-size: 0.9rem;
+            padding: 5px 0;
+        }
+
+        .absence-cat {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
+
+        .task-board {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .task-col {
+            flex: 1 1 180px;
+            background: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1rem;
+        }
+
+        .task-col h4 {
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            color: #0c4a6e;
+        }
+
+        .task-item {
+            background: white;
+            padding: 0.6rem;
+            border-radius: 0.8rem;
+            margin-bottom: 0.7rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+        }
+
+        .footer-hashtags {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #dbeafe;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hashtag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #2563eb;
+        }
+
+        .hashtag-list span {
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .github-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .github-btn:hover {
+            background: #1e293b;
+        }
+
+        .clone-cmd {
+            background: #1e293b;
+            color: #bbd7fb;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .clone-cmd i {
+            color: #facc15;
+            margin-right: 8px;
+        }
+
+        /* small tweaks */
+        .note {
+            background: #fffbeb;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border-left: 5px solid #f59e0b;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1.5rem; }
+            .tab-btn { padding: 0.8rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- HEADER -->
+    <div class="top-header">
+        <div class="title-section">
+            <h1>Teamtafel <span style="font-size:1.2rem; background:#e9f0fa; padding:0.2rem 1rem; border-radius:30px; margin-left:10px;">demo</span></h1>
+            <div class="badge"><i class="fas fa-users"></i> workforce management · WPF · C#</div>
+        </div>
+        <div class="author-card">
+            <i class="fas fa-user-circle"></i>
+            <div class="author-text">
+                <a href="https://github.com/amirmobash" target="_blank">Amir Mobasheraghdam <i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i></a>
+                <small>creator & maintainer</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- TECH STACK BADGES -->
+    <div class="tech-strip">
+        <span class="tech-item"><i class="fab fa-microsoft"></i> .NET (WPF)</span>
+        <span class="tech-item"><i class="fas fa-code"></i> C#</span>
+        <span class="tech-item"><i class="fas fa-database"></i> Newtonsoft.Json</span>
+        <span class="tech-item"><i class="fas fa-chart-line"></i> Microsoft.Extensions.Logging</span>
+        <span class="tech-item"><i class="fas fa-folder-open"></i> JSON sync</span>
+    </div>
+
+    <!-- FEATURE HIGHLIGHTS (cards) -->
+    <div class="feature-grid">
+        <div class="feature-card"><i class="fas fa-id-badge"></i><h3>Employee</h3><p>Add, edit, roles, photos</p></div>
+        <div class="feature-card"><i class="fas fa-calendar-alt"></i><h3>Shift planning</h3><p>AM/PM, capacity, swap</p></div>
+        <div class="feature-card"><i class="fas fa-umbrella-beach"></i><h3>Absence tracking</h3><p>Vacation, sick, unexcused</p></div>
+        <div class="feature-card"><i class="fas fa-tasks"></i><h3>Task management</h3><p>Pending / In progress / Done</p></div>
+        <div class="feature-card"><i class="fas fa-chart-pie"></i><h3>Reporting</h3><p>Daily, weekly, monthly</p></div>
+        <div class="feature-card"><i class="fas fa-sync-alt"></i><h3>Sync folder</h3><p>JSON shared folder</p></div>
+    </div>
+
+    <!-- DEMO TABS (interactive) -->
+    <div class="demo-panel">
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="tab1"><i class="fas fa-users"></i> Employees</button>
+            <button class="tab-btn" data-tab="tab2"><i class="fas fa-calendar-week"></i> Shifts</button>
+            <button class="tab-btn" data-tab="tab3"><i class="fas fa-clock"></i> Absences</button>
+            <button class="tab-btn" data-tab="tab4"><i class="fas fa-list-check"></i> Tasks</button>
+            <button class="tab-btn" data-tab="tab5"><i class="fas fa-file-alt"></i> Reports</button>
+            <button class="tab-btn" data-tab="tab6"><i class="fas fa-cloud"></i> Sync & Data</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- Employees pane -->
+            <div id="tab1" class="tab-pane active-pane">
+                <h3 style="margin-bottom:1rem;"><i class="fas fa-id-card"></i> Employee management (mock data)</h3>
+                <table class="mock-table">
+                    <tr><th>Photo</th><th>Name</th><th>Role</th><th>Supervisor</th></tr>
+                    <tr><td><span class="avatar">JD</span></td><td>Jane Doe</td><td><span class="role-badge"><i class="fas fa-user-tie"></i> Manager</span></td><td>—</td></tr>
+                    <tr><td><span class="avatar">MS</span></td><td>Mike Smith</td><td><span class="role-badge"><i class="fas fa-user-cog"></i> Supervisor</span></td><td>Jane Doe</td></tr>
+                    <tr><td><span class="avatar">LK</span></td><td>Lisa Kumar</td><td><span class="role-badge"><i class="fas fa-user"></i> Employee</span></td><td>Mike Smith</td></tr>
+                    <tr><td><span class="avatar">CR</span></td><td>Carlos Ruiz</td><td><span class="role-badge"><i class="fas fa-user"></i> Employee</span></td><td>Mike Smith</td></tr>
+                </table>
+                <div class="note"><i class="fas fa-camera"></i> Optional employee photo support · add/edit/delete enabled.</div>
+            </div>
+            <!-- Shifts pane -->
+            <div id="tab2" class="tab-pane">
+                <h3 style="margin-bottom:1rem;"><i class="fas fa-calendar-check"></i> Shift planning · morning/evening</h3>
+                <div class="shift-grid">
+                    <div class="shift-day"><h4>Mon 10</h4><div class="shift-slot"><i class="fas fa-sun"></i> Morning: 5/5</div><div class="shift-slot"><i class="fas fa-moon"></i> Evening: 3/5</div><div><small>assigned: J.Doe, L.Kumar</small></div></div>
+                    <div class="shift-day"><h4>Tue 11</h4><div class="shift-slot"><i class="fas fa-sun"></i> Morning: 4/5</div><div class="shift-slot"><i class="fas fa-moon"></i> Evening: 5/5</div><div><small>swap request: M.Smith</small></div></div>
+                    <div class="shift-day"><h4>Wed 12</h4><div class="shift-slot"><i class="fas fa-sun"></i> Morning: 5/5</div><div class="shift-slot"><i class="fas fa-moon"></i> Evening: 2/5</div><div><small>drag & drop ready</small></div></div>
+                </div>
+                <p style="margin-top:1rem;"><i class="fas fa-arrows-alt"></i> Drag & drop assignment · swap shifts · clear slots · configurable capacity</p>
+            </div>
+            <!-- Absences pane -->
+            <div id="tab3" class="tab-pane">
+                <h3><i class="fas fa-ban"></i> Absence tracking (grouped by category)</h3>
+                <table class="mock-table">
+                    <tr><th>Employee</th><th>Category</th><th>Date</th><th>Note</th></tr>
+                    <tr><td>Lisa Kumar</td><td><span class="absence-cat" style="background:#f97316;"></span> Vacation</td><td>12 Apr 2026</td><td>approved</td></tr>
+                    <tr><td>Carlos Ruiz</td><td><span class="absence-cat" style="background:#ef4444;"></span> Sick leave</td><td>11-13 Apr</td><td>doctor note</td></tr>
+                    <tr><td>Mike Smith</td><td><span class="absence-cat" style="background:#64748b;"></span> Unexcused</td><td>10 Apr</td><td>pending review</td></tr>
+                </table>
+                <p class="note"><i class="fas fa-shield-alt"></i> Prevents assigning absent employees to shifts automatically.</p>
+            </div>
+            <!-- Tasks pane -->
+            <div id="tab4" class="tab-pane">
+                <h3><i class="fas fa-check-double"></i> Task board · status tracking</h3>
+                <div class="task-board">
+                    <div class="task-col"><h4>⏳ Pending</h4><div class="task-item"><i class="far fa-circle"></i> Inventory count (assigned: Lisa)</div><div class="task-item"><i class="far fa-circle"></i> Clean store room</div></div>
+                    <div class="task-col"><h4>⚙️ In Progress</h4><div class="task-item"><i class="fas fa-spinner"></i> Schedule training (Mike) · 60%</div><div class="task-item"><i class="fas fa-spinner"></i> Order supplies (Carlos) · 30%</div></div>
+                    <div class="task-col"><h4>✅ Completed</h4><div class="task-item"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Approve timesheets (Jane)</div><div class="task-item"><i class="fas fa-check-circle" style="color:#16a34a;"></i> Update shift plan</div></div>
+                </div>
+                <p><i class="fas fa-pen"></i> Progress notes, assign employees, due dates</p>
+            </div>
+            <!-- Reports pane -->
+            <div id="tab5" class="tab-pane">
+                <h3><i class="fas fa-chart-simple"></i> Report preview (demo)</h3>
+                <div style="background:#f1f5f9; border-radius:1rem; padding:1.2rem;">
+                    <p><strong>📊 Weekly summary (Apr 06 – Apr 12)</strong></p>
+                    <ul style="margin-left:1.2rem;">
+                        <li>Total shifts filled: 42/50</li>
+                        <li>Absences: 3 (vacation 1, sick 1, unexcused 1)</li>
+                        <li>Tasks completed: 7 / 12</li>
+                    </ul>
+                    <div style="background:white; border-radius:0.8rem; padding:0.8rem; margin-top:1rem; text-align:center; border:1px dashed #2563eb;">
+                        <i class="fas fa-print"></i> Printable report preview (daily/weekly/monthly)
+                    </div>
+                </div>
+            </div>
+            <!-- Sync pane -->
+            <div id="tab6" class="tab-pane">
+                <h3><i class="fas fa-folder-shared"></i> Sync / shared JSON folder</h3>
+                <div style="background:#e6f7ff; border-radius:1rem; padding:1.2rem;">
+                    <p><i class="fas fa-check-circle" style="color:#2563eb;"></i> Data stored as JSON in configurable directory (default: <code>./Data/</code>)</p>
+                    <p><i class="fas fa-network-wired"></i> Point to a shared network folder → multi-device sync</p>
+                    <p><i class="fas fa-sync-alt fa-spin" style="color:#2563eb;"></i> Sync manager detects external changes and reloads safely.</p>
+                    <div class="clone-cmd"><i class="fas fa-terminal"></i> git clone https://github.com/amirmobash/Teamtafel.git</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT STRUCTURE (mini) -->
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; background: #ecf7fc; border-radius: 1.5rem; padding: 1.5rem; margin: 1rem 0;">
+        <div><span style="font-weight:700;">🗂️ Project structure</span> (high-level)</div>
+        <div><i class="fas fa-folder-open"></i> ManagementApp (UI: employees, shifts, tasks...)</div>
+        <div><i class="fas fa-chart-bar"></i> DisplayApp (AI recommendations, dashboards)</div>
+        <div><i class="fas fa-share-alt"></i> Shared (models, JSON helpers, sync logic)</div>
+    </div>
+
+    <!-- HASHTAGS + GITHUB -->
+    <div class="footer-hashtags">
+        <div class="hashtag-list">
+            <span>#WPF</span> <span>#CSharp</span> <span>#DotNet</span> <span>#WorkforceManagement</span> <span>#ShiftPlanning</span> <span>#EmployeeScheduling</span> <span>#AbsenceTracking</span> <span>#TaskManagement</span> <span>#Reporting</span> <span>#OpenSource</span> <span>#SmallBusiness</span> <span>#TeamProductivity</span> <span>#DesktopApp</span> <span>#JSON</span> <span>#Sync</span> <span>#GitHub</span> <span>#AmirMobasheraghdam</span> <span>#Teamtafel</span>
+        </div>
+        <a href="https://github.com/amirmobash/Teamtafel" target="_blank" class="github-btn"><i class="fab fa-github"></i> View on GitHub</a>
+    </div>
+    <div style="text-align: right; margin-top: 0.5rem; color: #4b5563; font-size:0.9rem;">
+        <i class="fas fa-code-branch"></i> Amir Mobasheraghdam — Teamtafel Public (demo presentation)
+    </div>
+</div>
+
+<!-- SIMPLE TAB SCRIPT -->
+<script>
+    (function() {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const panes = document.querySelectorAll('.tab-pane');
+
+        function activateTab(tabId) {
+            // remove active class from all panes and buttons
+            panes.forEach(p => p.classList.remove('active-pane'));
+            tabButtons.forEach(b => b.classList.remove('active'));
+
+            // activate corresponding pane and button
+            const activePane = document.getElementById(tabId);
+            if (activePane) activePane.classList.add('active-pane');
+
+            // find button with matching data-tab
+            tabButtons.forEach(b => {
+                if (b.dataset.tab === tabId) {
+                    b.classList.add('active');
+                }
+            });
+        }
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabId = btn.dataset.tab;
+                if (tabId) activateTab(tabId);
+            });
+        });
+
+        // ensure first tab is active (tab1) in case initial mismatch
+        activateTab('tab1');
+    })();
+</script>
+
+<!-- additional inline for demo visibility -->
+</body>
+</html>
